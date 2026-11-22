@@ -47,11 +47,11 @@ export function Logo() {
 export function RingVisual() {
   const nodes = Array.from({ length: 10 }, (_, i) => {
     const a = (i / 10) * Math.PI * 2;
-    return { x: 200 + Math.cos(a) * 150, y: 200 + Math.sin(a) * 150, k: i };
+    return { x: Number((200 + Math.cos(a) * 150).toFixed(4)), y: Number((200 + Math.sin(a) * 150).toFixed(4)), k: i };
   });
   const inner = Array.from({ length: 6 }, (_, i) => {
     const a = (i / 6) * Math.PI * 2 + 0.4;
-    return { x: 200 + Math.cos(a) * 90, y: 200 + Math.sin(a) * 90, k: i };
+    return { x: Number((200 + Math.cos(a) * 90).toFixed(4)), y: Number((200 + Math.sin(a) * 90).toFixed(4)), k: i };
   });
   return (
     <svg viewBox="0 0 400 400" className="h-full w-full" aria-hidden>

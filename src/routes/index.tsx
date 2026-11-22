@@ -8,7 +8,8 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Logo, Reveal, RingVisual, SectionHead } from "@/components/landing/primitives";
+import { Logo, Reveal, SectionHead } from "@/components/landing/primitives";
+import { HeroSculpture } from "@/components/landing/hero-sculpture";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -56,7 +57,7 @@ function Nav() {
 function Hero() {
   return (
     <section id="top" className="relative overflow-hidden">
-      <div className="mx-auto max-w-6xl px-5 pb-12 pt-12 text-center sm:pt-16">
+      <div className="mx-auto max-w-6xl px-5 pb-4 pt-10 text-center sm:pt-12">
         <Reveal className="mx-auto max-w-3xl">
           <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 font-mono text-xs text-muted-foreground">
             <span className="size-1.5 rounded-full bg-primary" /> Launching on Robinhood Chain testnet
@@ -73,7 +74,7 @@ function Hero() {
             <Button asChild variant="secondary"><a href="#developers"><BookOpen /> Read the docs</a></Button>
           </div>
         </Reveal>
-        <Reveal delay={0.15} className="mx-auto mt-6 aspect-square w-44 sm:w-52"><RingVisual /></Reveal>
+        <HeroSculpture />
       </div>
     </section>
   );
