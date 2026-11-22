@@ -90,7 +90,7 @@
   --secondary: oklch(0.26 0.014 285);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.23 0.014 285);
-  --muted-foreground: oklch(0.69 0.02 285);
+  --muted-foreground: oklch(0.75 0.02 285);
   --accent: oklch(0.26 0.014 285);
   --accent-foreground: oklch(0.98 0 0);
   --destructive: oklch(0.65 0.2 22);
@@ -117,7 +117,7 @@
 
 @layer base {
   html { scroll-behavior: smooth; }
-  body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+  body { font-family: var(--font-sans); font-weight: 500; -webkit-font-smoothing: antialiased; }
   h1, h2, h3 { font-family: var(--font-display); letter-spacing: 0; }
   section[id] { scroll-margin-top: 6rem; }
 }
@@ -138,6 +138,21 @@
 }
 @keyframes drift { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(4%, -3%) scale(1.08); } }
 @utility animate-drift { animation: drift 14s ease-in-out infinite; }
+@utility hero-halo {
+  background: radial-gradient(circle at 50% 50%, color-mix(in oklab, var(--violet) 42%, transparent) 0%, color-mix(in oklab, var(--cyan) 16%, transparent) 40%, transparent 68%);
+}
+@utility hero-fade {
+  background: radial-gradient(115% 100% at 62% 60%, transparent 22%, var(--background) 76%);
+}
+@utility hero-fade-right {
+  background: radial-gradient(115% 100% at 92% 50%, transparent 16%, var(--background) 64%);
+}
+@utility hero-scrim {
+  background: linear-gradient(to right, var(--background) 0%, color-mix(in oklab, var(--background) 92%, transparent) 42%, color-mix(in oklab, var(--background) 45%, transparent) 68%, transparent 88%);
+}
+@utility hero-veil {
+  background: radial-gradient(115% 85% at 50% 50%, color-mix(in oklab, var(--background) 86%, transparent) 0%, color-mix(in oklab, var(--background) 58%, transparent) 48%, transparent 76%);
+}
 @keyframes spin-slow { to { transform: rotate(360deg); } }
 @utility animate-spin-slow { animation: spin-slow 40s linear infinite; }
 @utility animate-spin-rev { animation: spin-slow 55s linear infinite reverse; }

@@ -136,7 +136,7 @@ export default function RingScene() {
         pointer.current = { x: ((event.clientX - bounds.left) / bounds.width - 0.5) * 2, y: ((event.clientY - bounds.top) / bounds.height - 0.5) * 2 };
       }}
       onPointerLeave={() => { pointer.current = { x: 0, y: 0 }; }}>
-      {palette && <Canvas camera={{ position: [0, 0, 8.5], fov: 36 }} dpr={[1, 1.5]} frameloop={!reduced && visible ? "always" : "demand"} gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}>
+      {palette && <Canvas camera={{ position: [0, 0, 6.9], fov: 36 }} dpr={[1, 1.5]} frameloop={!reduced && visible ? "always" : "demand"} gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}>
         <Sculpture palette={palette} pointer={pointer} reduced={reduced} onReady={() => setReady(true)} />
       </Canvas>}
     </div>

@@ -57,24 +57,27 @@ function Nav() {
 function Hero() {
   return (
     <section id="top" className="relative overflow-hidden">
-      <div className="mx-auto max-w-6xl px-5 pb-4 pt-10 text-center sm:pt-12">
-        <Reveal className="mx-auto max-w-3xl">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 font-mono text-xs text-muted-foreground">
-            <span className="size-1.5 rounded-full bg-primary" /> Launching on Robinhood Chain testnet
-          </span>
-          <h1 className="mt-6 text-5xl font-semibold leading-[1.05]">Ringfence</h1>
-          <p className="mt-3 text-[28px] font-medium leading-[34px] sm:text-5xl sm:leading-[49px]">
-            Private payments,<br /><span className="text-primary">settled on-chain.</span>
-          </p>
-          <p className="mx-auto mt-5 max-w-xl text-base leading-6 text-muted-foreground">
-            Shielded transfers for EVM. Hide the asset and amount — and optionally the sender and recipient — in a single on-chain transaction, with compliance built in from the start.
-          </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Button asChild><a href="#waitlist">Join the waitlist <ArrowRight /></a></Button>
-            <Button asChild variant="secondary"><a href="#developers"><BookOpen /> Read the docs</a></Button>
-          </div>
-        </Reveal>
-        <HeroSculpture />
+      <HeroSculpture />
+      <div className="relative z-10 mx-auto flex min-h-[560px] max-w-6xl flex-col justify-center px-5 pb-16 pt-14 sm:min-h-[660px] lg:min-h-[760px]">
+        <div className="relative">
+          <div className="hero-veil absolute -inset-x-8 -inset-y-12 -z-10 lg:hidden" />
+          <Reveal className="mx-auto max-w-2xl text-center lg:mx-0 lg:text-left">
+            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/85 px-3 py-1.5 font-mono text-xs text-muted-foreground backdrop-blur-sm">
+              <span className="size-1.5 rounded-full bg-primary" /> Launching on Robinhood Chain testnet
+            </span>
+            <h1 className="mt-6 text-5xl font-semibold leading-[1.05]">Ringfence</h1>
+            <p className="mt-3 text-[28px] font-medium leading-[34px] sm:text-5xl sm:leading-[49px]">
+              Private payments,<br /><span className="text-primary">settled on-chain.</span>
+            </p>
+            <p className="mx-auto mt-5 max-w-xl text-base leading-6 text-muted-foreground lg:mx-0">
+              Shielded transfers for EVM. Hide the asset and amount — and optionally the sender and recipient — in a single on-chain transaction, with compliance built in from the start.
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-3 lg:justify-start">
+              <Button asChild><a href="#waitlist">Join the waitlist <ArrowRight /></a></Button>
+              <Button asChild variant="secondary"><a href="#developers"><BookOpen /> Read the docs</a></Button>
+            </div>
+          </Reveal>
+        </div>
       </div>
     </section>
   );
