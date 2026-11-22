@@ -1,7 +1,7 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, Lightformer } from "@react-three/drei";
 import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
-import { Color, DataTexture, Group, MathUtils, RedFormat, SRGBColorSpace } from "three";
+import { Color, DataTexture, Group, Mesh, MathUtils, RedFormat, SRGBColorSpace } from "three";
 
 type Palette = { violet: Color; cyan: Color; ink: Color };
 type Pointer = { x: number; y: number };
@@ -18,11 +18,14 @@ function themeColor(token: string) {
   return new Color().setRGB((pixel[0] ?? 0) / 255, (pixel[1] ?? 0) / 255, (pixel[2] ?? 0) / 255, SRGBColorSpace);
 }
 
-function Sculpture({ palette, pointer, reduced, onReady }: {
-  palette: Palette; pointer: RefObject<Pointer>; reduced: boolean; onReady: () => void;
+function Sculpture({ palette, pointer, reduced, onReady, progress }: {
+  palette: Palette; pointer: RefObject<Pointer>; reduced: boolean; onReady: () => void; progress?: RefObject<number>;
 }) {
   const assembly = useRef<Group>(null);
   const orbit = useRef<Group>(null);
+  const leftRing = useRef<Group>(null);
+  const rightRing = useRef<Group>(null);
+  const payment = useRef<Mesh>(null);
   const elapsed = useRef(0);
   const ready = useRef(false);
   const brushed = useMemo(() => {
@@ -44,16 +47,27 @@ function Sculpture({ palette, pointer, reduced, onReady }: {
       // Signal only after the first rendered frame.
       requestAnimationFrame(onReady);
     }
-    if (reduced) return;
-    elapsed.current += Math.min(delta, 0.05);
+    const dt = Math.min(delta, 0.05);
+    if (!reduced) elapsed.current += dt;
     const t = elapsed.current;
+    const p = MathUtils.clamp(progress?.current ?? 0, 0, 1);
+    const opening = Math.sin(p * Math.PI);
     if (assembly.current) {
-      assembly.current.rotation.x = MathUtils.damp(assembly.current.rotation.x, 0.2 + Math.sin(t * 0.3) * 0.12 + pointer.current.y * 0.18, 3, delta);
-      assembly.current.rotation.y = MathUtils.damp(assembly.current.rotation.y, Math.sin(t * 0.24) * 0.5 + pointer.current.x * 0.35, 3, delta);
+      assembly.current.rotation.x = MathUtils.damp(assembly.current.rotation.x, 0.2 + Math.sin(t * 0.3) * 0.12 + pointer.current.y * 0.18, 3, dt);
+      assembly.current.rotation.y = MathUtils.damp(assembly.current.rotation.y, Math.sin(t * 0.24) * 0.5 + pointer.current.x * 0.35 + p * 0.9, 4, dt);
       assembly.current.rotation.z = -0.22 + Math.sin(t * 0.2) * 0.1;
       assembly.current.position.y = Math.sin(t * 0.75) * 0.09;
     }
-    if (orbit.current) orbit.current.rotation.z = t * 0.12;
+    if (leftRing.current) leftRing.current.position.x = -0.67 - opening * 0.25;
+    if (rightRing.current) {
+      rightRing.current.position.x = 0.67 + opening * 0.25;
+      rightRing.current.rotation.y = 1.03 - opening * 0.55;
+    }
+    if (payment.current) {
+      payment.current.position.set(-2.3 + p * 4.6, Math.sin(p * Math.PI * 2) * 0.3, Math.sin(p * Math.PI) * 0.65);
+      payment.current.rotation.set(t * 0.5, t * 0.8, Math.PI / 4);
+    }
+    if (orbit.current) orbit.current.rotation.z = t * 0.12 + p * Math.PI;
   });
 
   return (
@@ -69,7 +83,7 @@ function Sculpture({ palette, pointer, reduced, onReady }: {
         <Lightformer intensity={2} position={[0, -3, 2]} scale={[6, 1, 1]} color={palette.ink} />
       </Environment>
       <group ref={assembly} rotation={[0.2, 0, -0.22]} scale={1.16}>
-        <group position={[-0.67, 0, 0]} rotation={[0.12, -0.35, 0]}>
+        <group ref={leftRing} position={[-0.67, 0, 0]} rotation={[0.12, -0.35, 0]}>
           <mesh>
             <torusGeometry args={[1.06, 0.22, 32, 128]} />
             <meshPhysicalMaterial color={palette.violet} metalness={0.78} roughness={0.24} roughnessMap={brushed} clearcoat={1} clearcoatRoughness={0.15} envMapIntensity={1.4} />
@@ -79,7 +93,7 @@ function Sculpture({ palette, pointer, reduced, onReady }: {
             <meshStandardMaterial color={palette.ink} metalness={0.5} roughness={0.2} />
           </mesh>
         </group>
-        <group position={[0.67, 0, 0]} rotation={[0, 1.03, 0.12]}>
+        <group ref={rightRing} position={[0.67, 0, 0]} rotation={[0, 1.03, 0.12]}>
           <mesh>
             <torusGeometry args={[1.06, 0.22, 32, 128]} />
             <meshPhysicalMaterial color={palette.cyan} metalness={0.72} roughness={0.22} roughnessMap={brushed} clearcoat={1} clearcoatRoughness={0.12} envMapIntensity={1.4} />
@@ -89,6 +103,10 @@ function Sculpture({ palette, pointer, reduced, onReady }: {
             <meshStandardMaterial color={palette.ink} metalness={0.5} roughness={0.2} />
           </mesh>
         </group>
+        {progress && <mesh ref={payment} position={[-2.3, 0, 0]}>
+          <octahedronGeometry args={[0.14]} />
+          <meshStandardMaterial color={palette.ink} metalness={0.35} roughness={0.16} />
+        </mesh>}
         <group rotation={[0.85, 0.2, 0]}>
           <group ref={orbit}>
             <mesh rotation={[0, 0, 0.3]}>
@@ -110,7 +128,7 @@ function Sculpture({ palette, pointer, reduced, onReady }: {
   );
 }
 
-export default function RingScene() {
+export default function RingScene({ progress }: { progress?: RefObject<number> }) {
   const container = useRef<HTMLDivElement>(null);
   const pointer = useRef<Pointer>({ x: 0, y: 0 });
   const [palette, setPalette] = useState<Palette | null>(null);
@@ -136,8 +154,8 @@ export default function RingScene() {
         pointer.current = { x: ((event.clientX - bounds.left) / bounds.width - 0.5) * 2, y: ((event.clientY - bounds.top) / bounds.height - 0.5) * 2 };
       }}
       onPointerLeave={() => { pointer.current = { x: 0, y: 0 }; }}>
-      {palette && <Canvas camera={{ position: [0, 0, 6.9], fov: 36 }} dpr={[1, 1.5]} frameloop={!reduced && visible ? "always" : "demand"} gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}>
-        <Sculpture palette={palette} pointer={pointer} reduced={reduced} onReady={() => setReady(true)} />
+      {palette && <Canvas camera={{ position: [0, 0, progress ? 8.2 : 6.9], fov: 36 }} dpr={[1, 1.5]} frameloop={!reduced && visible ? "always" : "demand"} gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}>
+        <Sculpture palette={palette} pointer={pointer} reduced={reduced} onReady={() => setReady(true)} {...(progress ? { progress } : {})} />
       </Canvas>}
     </div>
   );

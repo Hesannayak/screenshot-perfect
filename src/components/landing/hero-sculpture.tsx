@@ -1,5 +1,5 @@
 import { ClientOnly } from "@tanstack/react-router";
-import { Component, lazy, Suspense, type ReactNode } from "react";
+import { Component, lazy, Suspense, type ReactNode, type RefObject } from "react";
 import { RingVisual } from "./primitives";
 
 const RingScene = lazy(() => import("./ring-scene"));
@@ -22,7 +22,14 @@ class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean
  * Decorative background stage: one oversized, right-anchored sculpture that
  * spills past the section edge, with token-derived fades so copy stays legible.
  */
-export function HeroSculpture() {
+export function HeroSculpture({ progress }: { progress?: RefObject<number> }) {
+  if (progress) return (
+    <div className="h-full w-full" aria-hidden>
+      <ClientOnly fallback={<Fallback />}>
+        <SceneBoundary><Suspense fallback={<Fallback />}><RingScene progress={progress} /></Suspense></SceneBoundary>
+      </ClientOnly>
+    </div>
+  );
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
       <div className="hero-halo absolute left-auto right-[-26%] top-[66%] h-[92vw] max-h-[560px] w-[92vw] max-w-[560px] -translate-y-1/2 opacity-45 blur-3xl lg:left-auto lg:right-[-2%] lg:top-1/2 lg:h-[88vh] lg:max-h-[820px] lg:w-[88vh] lg:max-w-[820px] lg:translate-x-0 lg:opacity-50" />

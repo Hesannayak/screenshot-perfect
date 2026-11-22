@@ -156,3 +156,21 @@
 @keyframes spin-slow { to { transform: rotate(360deg); } }
 @utility animate-spin-slow { animation: spin-slow 40s linear infinite; }
 @utility animate-spin-rev { animation: spin-slow 55s linear infinite reverse; }
+
+.payment-journey { height: 240vh; }
+.journey-stage { height: min(760px, calc(100svh - 64px)); min-height: 650px; }
+@media (max-width: 1023px) {
+  .payment-journey { height: 230vh; }
+  .journey-stage { height: 740px; min-height: 0; }
+}
+@media (max-width: 639px) {
+  .journey-stage { height: 650px; }
+}
+@media (max-height: 720px) {
+  .journey-stage { position: relative; top: 0; }
+  .payment-journey { height: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .payment-journey { height: auto; }
+  .journey-stage { position: relative; top: 0; }
+}

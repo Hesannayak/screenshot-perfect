@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import {
   ArrowRight, BookOpen, Check, Cpu, Eye, EyeOff, FileCode2, Fingerprint, KeyRound, Layers,
-  Lock, Network, ShieldCheck, Shuffle, Sparkles, Users, Wallet, ArrowDownToLine, Send, Menu, X,
+  Lock, Network, ShieldCheck, Sparkles, Users, Wallet, ArrowDownToLine, Menu, X,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Logo, Reveal, SectionHead } from "@/components/landing/primitives";
 import { HeroSculpture } from "@/components/landing/hero-sculpture";
+import { PaymentJourney, PaymentDemo } from "@/components/landing/payment-journey";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -111,7 +112,7 @@ function Problem() {
             ["Mixers without accountability", "Privacy with no policy layer invites abuse, and gets shut down."],
             ["Ringfence: privacy with policy", "Shielded transfers where compliance rules are proven on-chain before any private transfer settles."],
           ].map(([t, d], i) => (
-            <Reveal key={t} delay={i * 0.08} className={`${card} p-5 ${i === 2 ? "border-primary/30" : ""}`}>
+            <Reveal key={t} delay={i * 0.08} className={`border-t py-5 ${i === 2 ? "border-primary/50" : "border-border"}`}>
               <h3 className="font-semibold">{t}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{d}</p>
             </Reveal>
@@ -123,29 +124,13 @@ function Problem() {
 }
 
 function HowItWorks() {
-  const steps = [
-    [Lock, "Shield", "Deposit tokens into the pool. They become an encrypted note only you can spend."],
-    [Shuffle, "Transfer privately", "A zero-knowledge proof moves value while hiding the asset and amount."],
-    [Send, "Withdraw or pay", "Exit to any address or pay a merchant, settled in one transaction."],
-    [Eye, "Disclose (optional)", "Share a scoped viewing key with an auditor. Nothing more, nothing less."],
-  ] as const;
   return (
-    <section id="product" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-16">
-      <SectionHead eyebrow="How it works" title="Four steps. One shielded pool." />
-      <div className="relative mt-8 grid gap-4 md:grid-cols-4">
-        {steps.map(([I, t, d], i) => (
-          <Reveal key={t} delay={i * 0.08} className={`${card} p-6`}>
-            <div className="flex items-center justify-between">
-              <span className="grid size-10 place-items-center rounded-md bg-secondary text-primary"><I className="size-5" /></span>
-              <span className="font-mono text-xs text-muted-foreground">0{i + 1}</span>
-            </div>
-            <h3 className="mt-5 font-semibold">{t}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{d}</p>
-          </Reveal>
-        ))}
-      </div>
-      <Reveal className="mt-8 border-t border-border pt-8">
-        <p className="font-mono text-xs text-muted-foreground">Architecture</p>
+    <section className="mx-auto max-w-6xl px-5 py-16">
+      <Reveal>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <h2 className="text-[28px] font-semibold leading-[34px]">Privacy, end to end.</h2>
+          <p className="font-mono text-xs text-primary">Under the hood / Architecture</p>
+        </div>
         <div className="mt-6 grid items-center gap-4 md:grid-cols-[1fr_auto_1.3fr_auto_1fr]">
           <Box title="User wallet" sub="+ Ringfence SDK" icon={Wallet} />
           <Arrow />
@@ -191,9 +176,9 @@ function Features() {
   return (
     <section className="mx-auto max-w-6xl px-5 py-16">
       <SectionHead eyebrow="Features" title="Everything a private balance needs." />
-      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+      <div className="mt-8 grid gap-x-12 sm:grid-cols-2">
         {f.map(([I, t, d], i) => (
-          <Reveal key={t} delay={(i % 2) * 0.06} className={`${card} flex gap-4 p-6`}>
+          <Reveal key={t} delay={(i % 2) * 0.06} className="flex gap-4 border-t border-border py-6">
             <I className="mt-0.5 size-5 shrink-0 text-primary" />
             <div><h3 className="font-semibold">{t}</h3><p className="mt-1 text-sm text-muted-foreground">{d}</p></div>
           </Reveal>
@@ -422,7 +407,7 @@ function Index() {
     <div className="min-h-screen bg-background text-foreground">
       <Nav />
       <main>
-        <Hero /><TrustBar /><Problem /><HowItWorks /><Features /><Tiers /><Developers /><Compliance /><Chains /><FAQ /><CTA />
+        <Hero /><TrustBar /><Problem /><PaymentJourney /><PaymentDemo /><HowItWorks /><Features /><Tiers /><Developers /><Compliance /><Chains /><FAQ /><CTA />
       </main>
       <Footer />
     </div>

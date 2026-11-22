@@ -33,3 +33,4 @@ use the editor.
 - Waitlist/contact forms are placeholder (toast only) until a backend is requested; read form values via FormData so pre-hydration input isn't lost.
 - Keep presentation colors and control treatments in shared CSS tokens and Button variants so the reference styling stays consistent across sections.
 - Hero 3D uses a lazy, client-only R3F scene with local lighting and CSS-token-derived colors; keep SSR intact, pause offscreen motion, respect reduced motion, and expose data-scene-ready for verification.
+- Payment storytelling lives in shared landing components; scroll progress is a ref consumed by the existing 3D scene, avoiding per-frame React renders. The observer demo uses fictional data only and must never submit a transaction.
