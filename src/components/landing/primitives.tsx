@@ -19,8 +19,8 @@ export function Reveal({ children, delay = 0, className }: { children: ReactNode
 export function SectionHead({ eyebrow, title, sub }: { eyebrow: string; title: ReactNode; sub?: string }) {
   return (
     <Reveal className="mx-auto max-w-2xl text-center">
-      <p className="font-mono text-xs uppercase tracking-[0.2em] text-primary">{eyebrow}</p>
-      <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">{title}</h2>
+      <p className="font-mono text-xs text-primary">{eyebrow}</p>
+      <h2 className="mt-3 text-[28px] font-semibold leading-[34px]">{title}</h2>
       {sub && <p className="mt-4 text-muted-foreground">{sub}</p>}
     </Reveal>
   );

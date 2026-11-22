@@ -31,3 +31,4 @@ use the editor.
 
 - Landing page sections live in src/routes/index.tsx with shared bits in src/components/landing/; single-page anchors because the brief is one scrolling page.
 - Waitlist/contact forms are placeholder (toast only) until a backend is requested; read form values via FormData so pre-hydration input isn't lost.
+- Keep presentation colors and control treatments in shared CSS tokens and Button variants so the reference styling stays consistent across sections.
