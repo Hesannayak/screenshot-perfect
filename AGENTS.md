@@ -28,3 +28,6 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Landing page sections live in src/routes/index.tsx with shared bits in src/components/landing/; single-page anchors because the brief is one scrolling page.
+- Waitlist/contact forms are placeholder (toast only) until a backend is requested; read form values via FormData so pre-hydration input isn't lost.
